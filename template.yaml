@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Discord_ThreadUnarchive
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 10
+
+Parameters:
+  DiscordToken:
+    Description: Discord Token. Must be prefixed with 'Bot' or 'Bearer'.
+    Type: String
+    NoEcho: true
+  ApplicationID:
+    Description: Discord Application ID (Client ID)
+    Type: String
+  ApplicationPublicKey:
+    Description: Discord Application Public Key
+    Type: String
+  RdsHost:
+    Description: AWS RDS Instance Endpoint
+    Type: String
+  DatabaseUser:
+    Description: AWS RDS Database User Name
+    Type: String
+  DatabasePassword:
+    Description: AWS RDS Database User Password
+    Type: String
+    NoEcho: true
+  DatabaseName:
+    Description: AWS RDS Database Name
+    Type: String
+  
+
+Resources:
+  DiscordThreadUnarchiveApplication:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: lambda
+      Handler: app.callback
+      Runtime: python3.9
+      Events:
+        CallbackApi:
+          Type: HttpApi # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /callback
+            Method: POST
+      Environment:
+        Variables:
+          DISCORD_TOKEN: !Ref DiscordToken
+          APPLICATION_ID: !Ref ApplicationID
+          APPLICATION_PUBLIC_KEY: !Ref ApplicationPublicKey
+          RDS_HOST: !Ref RdsHost
+          DB_USER: !Ref DatabaseUser
+          DB_PASSWORD: !Ref DatabasePassword
+          DB_NAME: !Ref DatabaseName
+
+#Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  #CallbackAPIEndpoint:
+    #Description: "API Gateway endpoint URL"
+    #Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/callback"

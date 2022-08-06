@@ -1,0 +1,44 @@
+{
+    "name" : "unarchive",
+    "name_localizations" : {
+        "ja": "アンアーカイブ"
+    },
+    "type" : 1,
+    "description" : "Automatically unarchive threads.",
+    "description_localizations": {
+        "ja": "スレッドを自動的にアーカイブ解除する。"
+    },
+    "default_member_permission" : "0",
+    "dm_permission" : false,
+    "options" : [
+        {
+            "type" : 7,
+            "channel_types" : [
+                10,
+                11,
+                12
+            ],
+            "name" : "thread",
+            "name_localizations" : {
+                "ja": "スレッド"
+            },
+            "description" : "Target Thread",
+            "description_localizations": {
+                "ja": "対象のスレッド"
+            },
+            "required" : true
+        },
+        {
+            "type" : 5,
+            "name" : "enable",
+            "name_localizations" : {
+                "ja": "有効化"
+            },
+            "description" : "Enable unarchiving?",
+            "description_localizations": {
+                "ja": "アンアーカイブを有効化しますか？"
+            },
+            "required" : true
+        }
+    ]
+}

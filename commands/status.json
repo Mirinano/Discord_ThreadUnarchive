@@ -1,0 +1,32 @@
+{
+    "name" : "status",
+    "name_localizations" : {
+        "ja": "ステータス"
+    },
+    "type" : 1,
+    "description" : "Check the automatic unarchiving setting for the thread.",
+    "description_localizations": {
+        "ja": "スレッドの自動アンアーカイブ設定を確認する。"
+    },
+    "default_member_permission" : "0",
+    "dm_permission" : false,
+    "options" : [
+        {
+            "type" : 7,
+            "channel_types" : [
+                10,
+                11,
+                12
+            ],
+            "name" : "thread",
+            "name_localizations" : {
+                "ja": "スレッド"
+            },
+            "description" : "Target Thread",
+            "description_localizations": {
+                "ja": "対象のスレッド"
+            },
+            "required" : true
+        }
+    ]
+}
