@@ -43,10 +43,8 @@ class Bot(Client):
             cur.execute(sql, (str(thread_id), ))
 
             results = cur.fetchall()
-            b = b'\x01'
             for r in results:
-                bit = r[0]
-                return bit == b
+                return bool(r[0])
             
         return False
 
@@ -60,6 +58,9 @@ class Bot(Client):
             return
         
         thread_id: snowflake = after.id
+        if not bool(thread_id):
+            return
+            
         status: bool = self.get_status(thread_id)
 
 

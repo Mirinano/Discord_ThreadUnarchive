@@ -73,12 +73,13 @@ def insert_thread(cursor, thread: dict):
         "id" : thread['id'],
         "channel" : thread['parent_id'],
         "thread_name" : thread['name'],
-        "locked" : "b'1'" if thread["thread_metadata"]['locked'] else "b'0'",
-        "archive" : "b'1'" if thread["thread_metadata"]['archived'] else "b'0'",
+        "locked" : "true" if thread["thread_metadata"]['locked'] else "false",
+        "archive" : "true" if thread["thread_metadata"]['archived'] else "false",
         "archive_timestamp" : convert_timestamp(thread["thread_metadata"]['archive_timestamp']),
         "auto_archive_duration" : thread["thread_metadata"]['auto_archive_duration'],
-        "invitable" : "b'1'" if thread["thread_metadata"].get('invitable') else "b'0'",
-        "create_timestamp" : convert_timestamp(thread["thread_metadata"].get('create_timestamp', "2000-01-01T00:00:00.000000+00:00")),
+        "invitable" : "true" if thread["thread_metadata"].get('invitable') else "false",
+        # "create_timestamp" : convert_timestamp(thread["thread_metadata"].get('create_timestamp', "2000-01-01T00:00:00.000000+00:00")),
+        "create_timestamp" : thread["thread_metadata"].get('create_timestamp', "2000-01-01T00:00:00.000000+00:00"),
     }
     sql_content = sql.format(**query)
     # print(sql_content)
@@ -96,7 +97,7 @@ def insert_unarchive(cursor, _id: str, enable: bool):
     ;"""
     query = {
         "id" : _id,
-        "available" : "b'1'" if enable else "b'0'",
+        "available" : "true" if enable else "false",
     }
     sql_content = sql.format(**query)
     # print(sql_content)
@@ -108,10 +109,8 @@ def select_unarchive(conn, _id: str) -> bool:
         cursor.execute(sql, (str(_id), ))
 
         results = cursor.fetchall()
-        b = b'\x01'
         for r in results:
-            bit = r[0]
-            return bit == b
+            return bool(r[0])
     
     return False
 
